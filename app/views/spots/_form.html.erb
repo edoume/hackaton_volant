@@ -1,0 +1,24 @@
+<%= form_for(@spot) do |f| %>
+  <% if @spot.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@spot.errors.count, "error") %> prohibited this spot from being saved:</h2>
+
+      <ul>
+      <% @spot.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.text_field :nom, placeholder: "Entrez un nom" %>
+  </div>
+  <div class="field">
+    <%= f.text_field :adresse, placeholder: "Entrez une adresse" %>
+  </div>
+  <br>
+  <div class="actions">
+    <%= f.submit "Enregistrer", class: "btn btn-info btn-md" %>
+  </div>
+<% end %>

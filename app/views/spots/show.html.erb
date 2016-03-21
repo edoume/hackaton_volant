@@ -1,0 +1,80 @@
+<%= render 'navi' %>
+
+<p class="text-center" id="notice"><%= notice %></p>
+
+<%= link_to 'Editer le spot actuel', edit_spot_path(@spot), class: "btn btn-danger btn-xs" %><hr>
+
+<p>
+  <strong>Adresse:</strong>
+  <%= @spot.adresse %>
+</p>
+
+<p>
+	<strong>Coordonnées GPS:</strong>
+	<%= @spot.latitude.round(7) %> / <%= @spot.longitude.round(7) %>
+</p>
+
+<p>
+	<strong>Vitesse du Vent actuelle:</strong>
+	<%= @spot.vitesse.round(2) %> Km/h <span class="glyphicon <%= @spot.vitesse >= 8 && @spot.vitesse <= 30 ? 'glyphicon-thumbs-up' : 'glyphicon-thumbs-down' %>"></span>
+</p>
+<hr>
+<div class="panel-heading"><strong>Vitesse moyenne du vent dans les 7 prochains jours:</strong></div>
+
+<div class="row">
+<div class="col-md-12" id="TEST">
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <% @dday.each do |d| %>
+      <th class="text-center">J+ <%= d %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+      <% @tabvitesse.each do |i| %>
+      <th class="text-center <%= i >= 8 && i <= 30 ? 'success' : 'danger' %>"><%= i.round(2) %> Km/h</th>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</div>
+
+<div class="panel-heading"><strong>Vitesse moyenne du vent et précipitations moyennes dans les 48 prochaines heures:</strong></div>
+
+<div class="row">
+<div class="col-md-12" id="TEST">
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+    <% @htime.each do |h| %> 
+    <th><%= h %>h</th>
+    <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+  	<% @tabheure.each do |i| %>
+		<th class="<%= i >= 8 && i <= 30 ? 'success' : 'danger' %>"><%= i.round(2) %> Km/h</th>
+    <% end %>
+  </tr>
+  </tbody>
+
+    <tbody>
+    <tr>
+    <% @pluietab.each do |p| %>
+    <th class="<%= p > 0 ? 'info' : 'default' %>"><%= p.round(2) %> mm/h</th>
+    <% end %>
+  </tr>
+  </tbody>
+</table>
+
+</div>
+</div>

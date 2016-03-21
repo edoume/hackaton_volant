@@ -1,0 +1,38 @@
+<%= render 'nav' %>
+
+<p class="text-center" id="notice"><%= notice %></p>
+
+<div class="panel panel-default">
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Nom de votre spot</th>
+      <th>Adresse</th>
+      <th class="visible-md visible-lg">Coordonnées GPS</th>
+      <th>Vitesse du Vent</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @spots.each do |spot| %>
+      <tr>
+        <td><strong><%= spot.nom %></strong></td>
+        <td><%= spot.adresse %></td>
+        <td class="visible-md visible-lg"><%= spot.latitude.round(7) %> / <%= spot.longitude.round(7) %></td>
+        <td class=" text-center <%= spot.can_fly ? 'success' : 'danger' %>"><%= spot.vitesse.round(2) %> Km/h</td>
+
+        <td class="active text-center" title="Détails de votre spot"><%= link_to '', spot, class: "btn btn-default btn-xs glyphicon glyphicon-eye-open" %></td>
+
+        <td class="warning text-center" title="Éditer votre spot"><%= link_to '', edit_spot_path(spot), class: "btn btn-default btn-xs glyphicon glyphicon-edit" %></td>
+
+        <td class="danger text-center" title="Supprimer votre spot"><%= link_to '', spot, class: "btn btn-default btn-xs glyphicon glyphicon-remove", method: :delete, data: { confirm: 'Êtes-vous sûr ?' } %></td>
+
+        <td class="info text-center" title="Rafraichir les données de votre spot"><%= link_to '', refresh_spot_path(spot), class: "btn btn-default btn-xs glyphicon glyphicon-refresh" %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
