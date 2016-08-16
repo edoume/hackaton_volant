@@ -1,4 +1,6 @@
 class Spot < ActiveRecord::Base
+	include SpotsHelper
+
 	geocoded_by :adresse
 	after_validation :geocode
 	before_save :set_windspeed
@@ -6,25 +8,21 @@ class Spot < ActiveRecord::Base
 	validates_presence_of :nom, :adresse
 
 	def set_windspeed
-		self.vitesse = forecast_request.currently.windSpeed * windspeed_voncert
+		self.vitesse = windspeed_convert(forecast_request.currently)
 	end
 
 	def tableauvitesse
 		tab = []
 		(0..7).each do |i|
-			tab << forecast_request.daily.data[i].windSpeed * windspeed_voncert
+			tab << windspeed_convert(forecast_request.daily.data[i])
 		end
 		tab
-	end
-
-	def windspeed_voncert
-		1.609344
 	end
 
 	def tableauheure
 		tabh = []
 		(1..48).each do |i|
-			tabh << forecast_request.hourly.data[i].windSpeed * windspeed_voncert
+			tabh << windspeed_convert(forecast_request.hourly.data[i])
 		end
 		tabh
 	end
