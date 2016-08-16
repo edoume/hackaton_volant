@@ -45,7 +45,7 @@ class SpotsController < ApplicationController
   # PATCH/PUT /spots/1
   # PATCH/PUT /spots/1.json
   def update
-   
+
 
     respond_to do |format|
       if @spot.update(spot_params)
@@ -69,7 +69,7 @@ class SpotsController < ApplicationController
   end
 
   def refresh
-    @spot.set_vitesse
+    @spot.set_windspeed
     @spot.save
     redirect_to root_path
   end

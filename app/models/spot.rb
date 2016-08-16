@@ -1,37 +1,38 @@
 class Spot < ActiveRecord::Base
-	geocoded_by :adresse   # can also be an IP address
-	after_validation :geocode          # auto-fetch coordinates
-	before_save :set_vitesse
+	geocoded_by :adresse
+	after_validation :geocode
+	before_save :set_windspeed
 	belongs_to :user
+	validates_presence_of :nom, :adresse
 
-	def set_vitesse
-		forecast = ForecastIO.forecast(latitude, longitude)
-		self.vitesse = forecast.currently.windSpeed * 1.609344
+	def set_windspeed
+		self.vitesse = forecast_request.currently.windSpeed * windspeed_voncert
 	end
 
 	def tableauvitesse
-		forecast = ForecastIO.forecast(latitude, longitude)
 		tab = []
 		(0..7).each do |i|
-			tab << forecast.daily.data[i].windSpeed * 1.609344
+			tab << forecast_request.daily.data[i].windSpeed * windspeed_voncert
 		end
 		tab
 	end
 
+	def windspeed_voncert
+		1.609344
+	end
+
 	def tableauheure
-		forecast = ForecastIO.forecast(latitude, longitude)
 		tabh = []
 		(1..48).each do |i|
-			tabh << forecast.hourly.data[i].windSpeed
+			tabh << forecast_request.hourly.data[i].windSpeed * windspeed_voncert
 		end
 		tabh
 	end
 
 	def tabpluie
-		forecast = ForecastIO.forecast(latitude, longitude)
 		pluietab = []
 		(1..48).each do |p|
-			pluietab << forecast.hourly.data[p].precipIntensity * 25.4
+			pluietab << forecast_request.hourly.data[p].precipIntensity * 25.4
 		end
 		pluietab
 	end
@@ -55,6 +56,12 @@ class Spot < ActiveRecord::Base
 
 	def can_fly
 		vitesse >= 8 && vitesse <= 30
+	end
+
+	private
+
+	def forecast_request
+		@forecast ||= ForecastIO.forecast(latitude, longitude)
 	end
 
 end
