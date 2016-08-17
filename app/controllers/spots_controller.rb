@@ -70,7 +70,6 @@ class SpotsController < ApplicationController
 
   def refresh
     @spot.set_windspeed
-    @spot.save
     redirect_to root_path
   end
 
