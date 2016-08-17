@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Spot do
   before(:each) do
-    @spot = build(:spot)
+    @spot = build(:fixed_spot)
   end
 
   it "is valid with a name, adresse and user" do
@@ -31,7 +31,7 @@ describe Spot do
 
   context "a post is forecasted" do
     it "return a hash" do
-      saved_spot = create(:spot)
+      saved_spot = create(:fixed_spot)
       expect(saved_spot.instance_eval { forecast_request }.is_a? Hash).to eq true
     end
 
