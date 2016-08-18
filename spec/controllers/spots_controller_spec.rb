@@ -96,7 +96,7 @@ describe SpotsController do
         expect(assigns(:spot)).to eq(@spot)
       end
 
-      it "changes @contact's attributes" do put :update, id: @spot,
+      it "changes @spot's attributes" do put :update, id: @spot,
         spot: attributes_for(:fixed_spot,
           nom: 'Gueret',
           adresse: '65 rue de champegaud gueret')
@@ -105,7 +105,7 @@ describe SpotsController do
         expect(@spot.adresse).to eq('65 rue de champegaud gueret')
       end
 
-      it "redirects to the updated contact" do
+      it "redirects to the updated spot" do
         put :update, id: @spot, spot: attributes_for(:fixed_spot)
         expect(response).to redirect_to @spot
       end
@@ -129,13 +129,21 @@ describe SpotsController do
     end
   end
 
-  describe 'DELETE#destroy' do
+  describe 'DELETE #destroy' do
     it "deletes the spot" do
       expect{ delete :destroy, id: @spot}.to change(Spot,:count).by(-1)
     end
     it "redirects to spots#index" do
       delete :destroy, id: @spot
       expect(response).to redirect_to spots_path
+    end
+  end
+
+  describe "PATCH #refresh" do
+    #je pense qu'il n'y à pas besoin de tester autre chose si la method set_windspeed est déjà testé on testera juste que l'action refresh fait bien un redirect
+    it "redirects to spots#index" do
+      get :refresh, id: @spot
+      expect(response).to redirect_to root_path
     end
   end
 end

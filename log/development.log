@@ -111,3 +111,4 @@ Started GET "/assets/application.self-3a3c8b61bda630ee689740ce7cbd0dd8ea6fdd45e2
             FROM sqlite_temp_master
             WHERE name='index_users_on_email' AND type='index'
 
+  [1m[36mSpot Load (2.4ms)[0m  [1mSELECT "spots".* FROM "spots"[0m
