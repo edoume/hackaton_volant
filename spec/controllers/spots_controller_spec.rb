@@ -88,4 +88,54 @@ describe SpotsController do
       end
     end
   end
+
+  describe "PUT #update" do
+    context "valid attributes" do
+      it "locates the request spot" do
+        put :update, id: @spot, spot: attributes_for(:fixed_spot)
+        expect(assigns(:spot)).to eq(@spot)
+      end
+
+      it "changes @contact's attributes" do put :update, id: @spot,
+        spot: attributes_for(:fixed_spot,
+          nom: 'Gueret',
+          adresse: '65 rue de champegaud gueret')
+        @spot.reload
+        expect(@spot.nom).to eq('Gueret')
+        expect(@spot.adresse).to eq('65 rue de champegaud gueret')
+      end
+
+      it "redirects to the updated contact" do
+        put :update, id: @spot, spot: attributes_for(:fixed_spot)
+        expect(response).to redirect_to @spot
+      end
+    end
+
+    context "with invalid attributes" do
+      it "does not change the contact's attributes" do
+        put :update, id: @spot, spot: attributes_for(:fixed_spot,
+            nom: 'Yolo',
+            adresse: nil)
+        @spot.reload
+        expect(@spot.nom).not_to eq("Yolo")
+        expect(@spot.adresse).to eq('7 place du 8 mai')
+      end
+
+      it "re-renders the :edit template" do
+        put :update, id: @spot,
+          spot: attributes_for(:invalid_spot)
+        expect(response).to render_template :edit
+      end
+    end
+  end
+
+  describe'DELETE#destroy'do
+    it "deletes the spot" do
+      expect{ delete :destroy, id: @spot}.to change(Spot,:count).by(-1)
+    end
+    it "redirects to spots#index" do
+      delete :destroy, id: @spot
+      expect(response).to redirect_to spots_path
+    end
+  end
 end
