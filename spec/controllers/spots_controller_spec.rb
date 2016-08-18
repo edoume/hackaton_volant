@@ -129,7 +129,7 @@ describe SpotsController do
     end
   end
 
-  describe'DELETE#destroy'do
+  describe 'DELETE#destroy' do
     it "deletes the spot" do
       expect{ delete :destroy, id: @spot}.to change(Spot,:count).by(-1)
     end
